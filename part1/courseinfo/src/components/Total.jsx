@@ -1,2 +1,4 @@
-const Total = (props) => <p>Number of exercises {props.totalExercises}</p>;
+const Total = ({ totalExercises }) => (
+  <p>Number of exercises {totalExercises}</p>
+);
 export default Total;
