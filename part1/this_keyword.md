@@ -13,4 +13,4 @@ In modern React (with Hooks), understanding object methods and the `this` keywor
   - Arrow functions can solve some `this`-related problems, but they should not be used as methods in objects because they do not bind `this` in the expected way.
 
 For further learning, it's recommended to explore resources like the screencast series "Understand JavaScript's `this` Keyword in Depth" by egghead.io.
-[Egghead Link](https://egghead.io/lessons/javascript-this-in-the-global-context)
+[This in the global context](https://egghead.io/lessons/javascript-this-in-the-global-context)
