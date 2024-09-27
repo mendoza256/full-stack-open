@@ -13,8 +13,8 @@ const App = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    entriesService.getAll().then((initialNotes) => {
-      setPersons(initialNotes);
+    entriesService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -40,10 +40,17 @@ const App = () => {
       e.preventDefault();
       console.log("handlesubmit");
 
-      const response = entriesService.create({ newName, newNumber });
-      console.log(response);
+      entriesService
+        .create({ name: newName, number: newNumber })
+        .then((data) => {
+          console.log(data);
+          setPersons(persons.concat(data));
+        })
+        .catch((error) => {
+          alert(`Error creating '${newName}': ${error}`);
+          setPersons(persons.filter((n) => n.id !== id));
+        });
 
-      setPersons(persons.concat(response));
       setNewName("");
       setNewNumber("");
     }
