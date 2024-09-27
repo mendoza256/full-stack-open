@@ -3,7 +3,7 @@ const Entries = ({ entries }) => {
     <>
       {" "}
       {entries.map((person) => (
-        <div key={person.name}>
+        <div key={person.id}>
           <span>{person.name}</span> <span>{person.number}</span>
         </div>
       ))}
