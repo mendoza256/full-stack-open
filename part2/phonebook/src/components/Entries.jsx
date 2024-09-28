@@ -10,5 +10,4 @@ const Entries = ({ entries }) => {
     </>
   );
 };
-
 export default Entries;
