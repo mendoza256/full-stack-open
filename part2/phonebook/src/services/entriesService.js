@@ -13,11 +13,19 @@ const create = (newPerson) => {
 
 const update = (id, updatedPerson) => {
   const request = axios.put(`${baseUrl}/${id}`, updatedPerson);
-  return request.then((response) => response.data);
+  return request
+    .then((response) => response.data)
+    .catch((error) => console.log(error));
+};
+
+const deleteById = (id) => {
+  const request = axios.delete(`${baseUrl}/${id}`);
+  return request.then((response) => response);
 };
 
 export default {
   getAll,
   create,
   update,
+  deleteById,
 };
