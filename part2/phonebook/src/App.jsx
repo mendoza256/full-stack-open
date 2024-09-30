@@ -33,26 +33,59 @@ const App = () => {
     setSearch(e.target.value);
   }
 
-  function handleSubmit(e) {
-    if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} has already been added to the phonebook`);
-    } else {
-      e.preventDefault();
-      console.log("handlesubmit");
+  function addEntry() {
+    entriesService
+      .create({ name: newName, number: newNumber })
+      .then((data) => {
+        setPersons(persons.concat(data));
+      })
+      .catch((error) => {
+        alert(`Error creating '${newName}': ${error}`);
+        setPersons(persons.filter((person) => person.name !== newName));
+      });
+  }
 
-      entriesService
-        .create({ name: newName, number: newNumber })
-        .then((data) => {
-          console.log(data);
-          setPersons(persons.concat(data));
-        })
-        .catch((error) => {
-          alert(`Error creating '${newName}': ${error}`);
-          setPersons(persons.filter((n) => n.id !== id));
-        });
+  function updateEntry(id, updatedPerson) {
+    console.log(id, updatedPerson);
+    entriesService
+      .update(id, updatedPerson)
+      .then((data) => {
+        const updatedPersons = persons.map((person) =>
+          person.id !== id ? person : data
+        );
+        setPersons(updatedPersons);
+      })
+      .catch((error) => {
+        alert(`Error updating ${newName}`);
+        console.log(error);
+      });
+  }
+
+  function handleSubmit(e) {
+    const confirmMessage = `${newName} is already added to the phonebook, replace the old number with a new one?`;
+    const person = persons.find((person) => person.name === newName);
+    if (!person) {
+      e.preventDefault();
+      addEntry();
 
       setNewName("");
       setNewNumber("");
+      return;
+    } else if (window.confirm(confirmMessage)) {
+      e.preventDefault();
+      updateEntry(person.id, { name: newName, number: newNumber });
+
+      setNewName("");
+      setNewNumber("");
+    }
+  }
+
+  function handleDeletePerson(id) {
+    const person = persons.find((person) => person.id === id);
+    if (window.confirm(`Do you really want to delete ${person.name}?`)) {
+      entriesService.deleteById(id).then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      });
     }
   }
 
@@ -74,7 +107,10 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <Headline type="h2" text="Numbers" />
-      <Entries entries={filteredEntries} />
+      <Entries
+        entries={filteredEntries}
+        handleDeletePerson={handleDeletePerson}
+      />
     </div>
   );
 };
