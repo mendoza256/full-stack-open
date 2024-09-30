@@ -2,23 +2,51 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "1",
+      "number": "040-123456",
       "id": "1"
     },
     {
       "name": "Ada Lovelace",
-      "number": "2",
+      "number": "39-44-5323523",
       "id": "2"
     },
     {
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": "3"
+<<<<<<< Updated upstream
     },
     {
-      "name": "Christian",
-      "number": "23123123",
-      "id": "9672"
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122",
+      "id": "4"
+    },
+    {
+      "id": "4694",
+      "name": "chris",
+      "number": "12341234"
+    },
+    {
+      "id": "ebf8",
+      "name": "christian",
+      "number": "1234543123"
+    },
+    {
+      "id": "23a5",
+      "name": "miffi",
+      "number": "123412341234"
+    },
+    {
+      "id": "a2a9",
+      "name": "mpii",
+      "number": "444"
+    },
+    {
+      "id": "865c",
+      "name": "mimpi",
+      "number": "1"
+=======
+>>>>>>> Stashed changes
     }
   ]
 }

@@ -1,4 +1,5 @@
 import Input from "./Input";
+import PropTypes from "prop-types";
 
 const Form = ({
   handleSubmit,
@@ -22,6 +23,14 @@ const Form = ({
       </div>
     </form>
   );
+};
+
+Form.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  newName: PropTypes.string.isRequired,
+  newNumber: PropTypes.string.isRequired,
+  handleNameChange: PropTypes.func.isRequired,
+  handleNumberChange: PropTypes.func.isRequired,
 };
 
 export default Form;

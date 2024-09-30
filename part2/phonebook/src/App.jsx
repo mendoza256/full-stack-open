@@ -5,12 +5,15 @@ import Input from "./components/Input";
 import Entries from "./components/Entries";
 import Form from "./components/Form";
 import entriesService from "./services/entriesService";
+import { Message } from "./components/Message";
+import "./styles.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
+  const [message, setMessage] = useState({ type: "", text: "" });
 
   useEffect(() => {
     entriesService.getAll().then((initialPersons) => {
@@ -33,11 +36,19 @@ const App = () => {
     setSearch(e.target.value);
   }
 
+<<<<<<< Updated upstream
+=======
+  function showMessage(message) {
+    setMessage(message);
+    setTimeout(() => setMessage(""), 2000);
+  }
+
   function addEntry() {
     entriesService
       .create({ name: newName, number: newNumber })
       .then((data) => {
         setPersons(persons.concat(data));
+        showMessage({ type: "Success", text: "New entry created!" });
       })
       .catch((error) => {
         alert(`Error creating '${newName}': ${error}`);
@@ -54,44 +65,82 @@ const App = () => {
           person.id !== id ? person : data
         );
         setPersons(updatedPersons);
+        showMessage({ type: "Success", text: "Entry updated!" });
       })
       .catch((error) => {
-        alert(`Error updating ${newName}`);
-        console.log(error);
+        console.log("error!", error);
+        showMessage({
+          type: "Error",
+          text: `Information of ${newName} has already been deleted!`,
+        });
       });
   }
 
-  function handleSubmit(e) {
-    const confirmMessage = `${newName} is already added to the phonebook, replace the old number with a new one?`;
-    const person = persons.find((person) => person.name === newName);
-    if (!person) {
-      e.preventDefault();
-      addEntry();
+  function deleteEntry(id, person) {
+    entriesService
+      .deleteById(id)
+      .then(() => {
+        setPersons(persons.filter((person) => person.id !== id));
+      })
+      .catch((error) => {
+        if (error.status === 404) {
+          showMessage({
+            type: "Error",
+            text: `Information of ${person.name} has already been removed from server!`,
+          });
+          setPersons(persons.filter((person) => person.id !== id));
+        }
+      });
+  }
 
+>>>>>>> Stashed changes
+  function handleSubmit(e) {
+    if (persons.some((person) => person.name === newName)) {
+      alert(`${newName} has already been added to the phonebook`);
+    } else {
+      e.preventDefault();
+<<<<<<< Updated upstream
+      console.log("handlesubmit");
+
+      entriesService
+        .create({ name: newName, number: newNumber })
+        .then((data) => {
+          console.log(data);
+          setPersons(persons.concat(data));
+        })
+        .catch((error) => {
+          alert(`Error creating '${newName}': ${error}`);
+          setPersons(persons.filter((n) => n.id !== id));
+        });
+
+      setNewName("");
+      setNewNumber("");
+=======
+      addEntry();
       setNewName("");
       setNewNumber("");
       return;
     } else if (window.confirm(confirmMessage)) {
       e.preventDefault();
       updateEntry(person.id, { name: newName, number: newNumber });
-
       setNewName("");
       setNewNumber("");
     }
   }
 
-  function handleDeletePerson(id) {
+  function handleDeletePerson(e, id) {
+    e.preventDefault();
     const person = persons.find((person) => person.id === id);
     if (window.confirm(`Do you really want to delete ${person.name}?`)) {
-      entriesService.deleteById(id).then(() => {
-        setPersons(persons.filter((person) => person.id !== id));
-      });
+      deleteEntry(id, person);
+>>>>>>> Stashed changes
     }
   }
 
   return (
     <div>
       <Headline type="h2" text="Phonebook" />
+      <Message message={message} />
       <Headline type="h3" text="Search" />
       <Input
         label="Filter shown with"
@@ -107,10 +156,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <Headline type="h2" text="Numbers" />
-      <Entries
-        entries={filteredEntries}
-        handleDeletePerson={handleDeletePerson}
-      />
+      <Entries entries={filteredEntries} />
     </div>
   );
 };
