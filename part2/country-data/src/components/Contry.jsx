@@ -4,7 +4,7 @@ import axios from "axios";
 export const Country = ({ country, detail }) => {
   const [showDetail, setShowDetail] = useState(detail);
   const baseUrl = "https://api.openweathermap.org/data/3.0/onecall?";
-  const weather_api_key = import.meta.env.WEATHER_API_KEY;
+  const weather_api_key = import.meta.env.VITE_WEATHER_API_KEY;
 
   useEffect(() => {
     if (!showDetail) return;
